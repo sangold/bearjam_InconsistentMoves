@@ -26,6 +26,7 @@ public class Tile
     {
         _hasBeenVisited = true;
         _grid.TriggerGridChanges(_x, _y);
+        GameManager.Instance.RemainingSquares--;
     }
 
     public bool SetWalkable(bool isWalkable)

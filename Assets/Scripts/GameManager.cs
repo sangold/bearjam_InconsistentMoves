@@ -11,6 +11,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player _player;
     private PlayerType[] _types;
     private PlayerType[] _nextTypes;
+    private float _elapsedTime;
+    private int _remainingSquares;
+
+    public int RemainingSquares { 
+        get => _remainingSquares; 
+        set {
+            _remainingSquares = value;
+            UIManager.Instance.UpdateRemainingSquares(_remainingSquares);
+        } 
+    }
 
     public Player Player { get => _player; }
 
@@ -43,6 +53,8 @@ public class GameManager : MonoBehaviour
 
     private void Init()
     {
+        _elapsedTime = 0;
+        RemainingSquares = MAP_HEIGHT * MAP_WIDTH;
         SetRandomPlayerType(false);
         _player.TeleportTo(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2));
         _gridManager.GetGrid().GetGridObject(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2)).VisitTile();
@@ -57,7 +69,7 @@ public class GameManager : MonoBehaviour
 
     private void SetRandomPlayerType(bool fromNext)
     {
-        if(!fromNext)
+        if (!fromNext)
             _player.SetType(_types[Random.Range(0, _types.Length)]);
         else
             _player.SetType(_nextTypes[Random.Range(0, _nextTypes.Length)]);
@@ -73,22 +85,28 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        _elapsedTime += Time.deltaTime;
+        UIManager.Instance.UpdateTimer(_elapsedTime);
+
         Vector3 mousePos = Utils.GetMouseWorldPosition();
 
         Tile hoveredTile = _gridManager.HoverTile(mousePos);
 
         if (hoveredTile == null) return;
-        
+
         if (Input.GetMouseButtonDown(0))
         {
-            if(_player.MoveTo(hoveredTile.X, hoveredTile.Y))
+            if (_player.MoveTo(hoveredTile.X, hoveredTile.Y))
             {
                 hoveredTile.VisitTile();
                 SetRandomPlayerType(true);
+                if (RemainingSquares == 0)
+                    Debug.Log("Victory: " + _elapsedTime);
                 _gridManager.CalculateNewMoves();
                 if (!_gridManager.IsThereLegalMove)
                     Debug.Log("GAME OVER");
             }
         }
+
     }
 }
