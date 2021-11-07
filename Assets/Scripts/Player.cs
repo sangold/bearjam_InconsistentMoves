@@ -41,4 +41,13 @@ public class Player : MonoBehaviour
 
         return false;
     }
+
+    public void TeleportTo(int x, int y)
+    {
+        Tile target = _grid.GetGridObject(x, y);
+        if (target == null) return;
+
+        _currentTile = target;
+        transform.position = _grid.GetWorldPosition(x, y);
+    }
 }

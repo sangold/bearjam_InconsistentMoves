@@ -96,6 +96,19 @@ public class GridManager : MonoBehaviour
         _numOfMoves = 0;
     }
 
+    public void ResetAll()
+    {
+        for (int x = 0; x < _grid.GetWidth(); x++)
+        {
+            for (int y = 0; y < _grid.GetHeight(); y++)
+            {
+                _grid.GetGridObject(x, y).Restart();
+            }
+        }
+
+        _numOfMoves = 0;
+    }
+
     public CustomGrid<Tile> GetGrid()
     {
         return _grid;
@@ -108,10 +121,5 @@ public class GridManager : MonoBehaviour
         VisualTile visualTile = _visualGrid[e.x, e.y];
         visualTile.SetBgColor(e.Tile.IsVisited);
         visualTile.SetWalkable(e.Tile.IsWalkable);
-    }
-
-    private void Update()
-    {
-        
     }
 }

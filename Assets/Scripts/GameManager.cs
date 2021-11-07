@@ -38,10 +38,21 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Camera.main.transform.position = new Vector3(MAP_WIDTH / 2f, MAP_HEIGHT / 2f, -10f);
+        Init();
+    }
+
+    private void Init()
+    {
         SetRandomPlayerType(false);
-        _player.MoveTo(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2));
+        _player.TeleportTo(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2));
         _gridManager.GetGrid().GetGridObject(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2)).VisitTile();
         _gridManager.CalculateNewMoves();
+    }
+
+    public void Restart()
+    {
+        _gridManager.ResetAll();
+        Init();
     }
 
     private void SetRandomPlayerType(bool fromNext)

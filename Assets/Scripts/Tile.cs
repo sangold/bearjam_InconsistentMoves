@@ -35,6 +35,13 @@ public class Tile
         return IsWalkable;
     }
 
+    public void Restart()
+    {
+        _hasBeenVisited = false;
+        IsWalkable = false;
+        _grid.TriggerGridChanges(_x, _y);
+    }
+
     public override string ToString()
     {
         return _hasBeenVisited.ToString();
