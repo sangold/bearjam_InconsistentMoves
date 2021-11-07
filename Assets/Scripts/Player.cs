@@ -35,7 +35,9 @@ public class Player : MonoBehaviour
         if (target.IsWalkable && _currentTile != target)
         {
             _currentTile = target;
-            transform.position = _grid.GetWorldPosition(x, y);
+            Vector3 pos = _grid.GetWorldPosition(x, y);
+            pos.z = -5f;
+            transform.position = pos;
             return true;
         }
 
@@ -48,6 +50,8 @@ public class Player : MonoBehaviour
         if (target == null) return;
 
         _currentTile = target;
-        transform.position = _grid.GetWorldPosition(x, y);
+        Vector3 pos = _grid.GetWorldPosition(x, y);
+        pos.z = -5f;
+        transform.position = pos;
     }
 }
