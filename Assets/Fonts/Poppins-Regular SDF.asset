@@ -285,6 +285,20 @@ MonoBehaviour:
       m_Height: 65
     m_Scale: 1
     m_AtlasIndex: 0
+  - m_Index: 695
+    m_Metrics:
+      m_Width: 52.828125
+      m_Height: 62.734375
+      m_HorizontalBearingX: 6.9375
+      m_HorizontalBearingY: 62.734375
+      m_HorizontalAdvance: 63.625
+    m_GlyphRect:
+      m_X: 749
+      m_Y: 163
+      m_Width: 54
+      m_Height: 63
+    m_Scale: 1
+    m_AtlasIndex: 0
   - m_Index: 696
     m_Metrics:
       m_Width: 33.75
@@ -479,6 +493,20 @@ MonoBehaviour:
       m_Y: 37
       m_Width: 49
       m_Height: 52
+    m_Scale: 1
+    m_AtlasIndex: 0
+  - m_Index: 729
+    m_Metrics:
+      m_Width: 24.9375
+      m_Height: 68.765625
+      m_HorizontalBearingX: 2.0625
+      m_HorizontalBearingY: 68.765625
+      m_HorizontalAdvance: 29.609375
+    m_GlyphRect:
+      m_X: 188
+      m_Y: 264
+      m_Width: 25
+      m_Height: 69
     m_Scale: 1
     m_AtlasIndex: 0
   - m_Index: 730
@@ -705,34 +733,6 @@ MonoBehaviour:
       m_Height: 12
     m_Scale: 1
     m_AtlasIndex: 0
-  - m_Index: 695
-    m_Metrics:
-      m_Width: 52.828125
-      m_Height: 62.734375
-      m_HorizontalBearingX: 6.9375
-      m_HorizontalBearingY: 62.734375
-      m_HorizontalAdvance: 63.625
-    m_GlyphRect:
-      m_X: 749
-      m_Y: 163
-      m_Width: 54
-      m_Height: 63
-    m_Scale: 1
-    m_AtlasIndex: 0
-  - m_Index: 729
-    m_Metrics:
-      m_Width: 24.9375
-      m_Height: 68.765625
-      m_HorizontalBearingX: 2.0625
-      m_HorizontalBearingY: 68.765625
-      m_HorizontalAdvance: 29.609375
-    m_GlyphRect:
-      m_X: 188
-      m_Y: 264
-      m_Width: 25
-      m_Height: 69
-    m_Scale: 1
-    m_AtlasIndex: 0
   m_CharacterTable:
   - m_ElementType: 1
     m_Unicode: 32
@@ -791,6 +791,10 @@ MonoBehaviour:
     m_GlyphIndex: 694
     m_Scale: 1
   - m_ElementType: 1
+    m_Unicode: 68
+    m_GlyphIndex: 695
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 69
     m_GlyphIndex: 696
     m_Scale: 1
@@ -845,6 +849,10 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 101
     m_GlyphIndex: 728
+    m_Scale: 1
+  - m_ElementType: 1
+    m_Unicode: 102
+    m_GlyphIndex: 729
     m_Scale: 1
   - m_ElementType: 1
     m_Unicode: 103
@@ -909,14 +917,6 @@ MonoBehaviour:
   - m_ElementType: 1
     m_Unicode: 8230
     m_GlyphIndex: 1000
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 68
-    m_GlyphIndex: 695
-    m_Scale: 1
-  - m_ElementType: 1
-    m_Unicode: 102
-    m_GlyphIndex: 729
     m_Scale: 1
   m_AtlasTextures:
   - {fileID: -5745869424686486437}
@@ -1327,24 +1327,24 @@ MonoBehaviour:
   m_FontWeightTable:
   - regularTypeface: {fileID: 0}
     italicTypeface: {fileID: 0}
-  - regularTypeface: {fileID: 11400000, guid: 59ad76d45a478e64b93df8fb4206d7ea, type: 2}
-    italicTypeface: {fileID: 11400000, guid: ad44a7b0145f4534b903e2d25aca0211, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: 88d586514b36fd24598b80bf9db14a6d, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 290d6c8a72dbb1f4bb91f8dbb87162d1, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: 7c06b02ace01ff24c97416a04e43f0d9, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 3ee1a0bbb14f54a4a9f7693922e9b512, type: 2}
   - regularTypeface: {fileID: 0}
-    italicTypeface: {fileID: 11400000, guid: 812f7b1afc50907478fcf84ffb8f3e92, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: cbaaf49f095e2604e9ed4c8f3c96c340, type: 2}
-    italicTypeface: {fileID: 11400000, guid: e80a34aa3ed42c040b67374d30c6fa3b, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: b6701cc76545215428f41737d9161791, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 0e3655f3fc9eace48af3c7d904b1da3d, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: 77fcdff78e3f97c40b8bdb8ee3b43c00, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 13951d5a47884ec49bfdc2ca2592a028, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: e13c9dc6de1be7d49a73204fcfecb028, type: 2}
-    italicTypeface: {fileID: 11400000, guid: 233c4d0fc1cc761459dc5646573331e0, type: 2}
-  - regularTypeface: {fileID: 11400000, guid: 0607fdc5a09b42349aa67aa07e4e41e0, type: 2}
-    italicTypeface: {fileID: 11400000, guid: a5aef22f605d2f947af283933bc33486, type: 2}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
+  - regularTypeface: {fileID: 0}
+    italicTypeface: {fileID: 0}
   fontWeights: []
   normalStyle: 0
   normalSpacingOffset: 0

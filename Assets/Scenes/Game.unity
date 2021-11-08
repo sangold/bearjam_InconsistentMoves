@@ -1125,7 +1125,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1053612943}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f0051bac9e8f7a42946916b648529f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 950594c449749714191d1d458ea212ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _timer: {fileID: 1136346213}
@@ -1988,7 +1988,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1053612947}
-        m_TargetAssemblyTypeName: VictoryPopup, Assembly-CSharp
+        m_TargetAssemblyTypeName: UIPopup, Assembly-CSharp
         m_MethodName: Restart
         m_Mode: 1
         m_Arguments:
@@ -2122,7 +2122,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1053612947}
-        m_TargetAssemblyTypeName: VictoryPopup, Assembly-CSharp
+        m_TargetAssemblyTypeName: UIPopup, Assembly-CSharp
         m_MethodName: Exit
         m_Mode: 1
         m_Arguments:

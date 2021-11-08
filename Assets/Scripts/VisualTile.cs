@@ -5,6 +5,7 @@ public class VisualTile : MonoBehaviour
 {
     private int _x, _y;
     [SerializeField] private MeshRenderer _mr;
+    [SerializeField] private GameObject _highlightGO;
     private Color _color;
     private bool _isMoving = false;
     private bool _isVisited;
@@ -33,10 +34,12 @@ public class VisualTile : MonoBehaviour
 
         if (isVisited && !_isMoving) 
         {
+            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 0.36f, 0.36f, .21f);
             StartCoroutine(Rotation(180));
         }
         else
         {
+            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
             _mr.materials[0].SetColor("_Color", _color);
             if(!_isMoving)
                 StartCoroutine(Rotation(-180));
@@ -60,6 +63,7 @@ public class VisualTile : MonoBehaviour
 
     public void SetHighlight(bool isActive)
     {
+        _highlightGO.SetActive(isActive);
         //if(!_isMoving)
         //{
         //    if(isActive)
