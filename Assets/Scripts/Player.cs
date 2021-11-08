@@ -15,11 +15,6 @@ public class Player : MonoBehaviour
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    private void Start()
-    {
-        MoveTo(0, 0);
-    }
-
     public void SetType(PlayerType type)
     {
         if (type == _currentType) return;
