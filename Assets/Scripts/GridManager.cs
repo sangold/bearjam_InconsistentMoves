@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    private static GridManager _instance;
+
+    public static GridManager Instance
+    {
+        get { return _instance; }
+    }
+
     private CustomGrid<Tile> _grid;
     private VisualTile[,] _visualGrid;
     private Tile _activeTile;
@@ -14,6 +21,14 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
+        _instance = this;
+
         _grid = new CustomGrid<Tile>(GameManager.MAP_WIDTH, GameManager.MAP_HEIGHT, 1f, Vector3.zero, (CustomGrid<Tile> g, int x, int y) => new Tile(g, x, y));
         _visualGrid = new VisualTile[GameManager.MAP_WIDTH, GameManager.MAP_HEIGHT];
         for(int x = 0; x < _grid.GetWidth(); x++)

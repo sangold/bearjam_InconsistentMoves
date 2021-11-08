@@ -1,6 +1,4 @@
 using IC.Utils;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -38,7 +36,6 @@ public class GameManager : MonoBehaviour
         }
 
         _instance = this;
-        DontDestroyOnLoad(this.gameObject);
 
         _types = Resources.LoadAll<PlayerType>("PlayerTypes");
         _nextTypes = new PlayerType[2];
@@ -47,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Camera.main.transform.position = new Vector3(MAP_WIDTH / 2f, MAP_HEIGHT / 2f, -10f);
+        Camera.main.transform.position = new Vector3(MAP_WIDTH / 2f, MAP_HEIGHT / 2f + 1f, -10f);
         Init();
     }
 
@@ -101,10 +98,11 @@ public class GameManager : MonoBehaviour
                 hoveredTile.VisitTile();
                 SetRandomPlayerType(true);
                 if (RemainingSquares == 0)
-                    Debug.Log("Victory: " + _elapsedTime);
+                    UIManager.Instance.OpenPopup(VictoryPopup.PopupType.VICTORY, _elapsedTime);
                 _gridManager.CalculateNewMoves();
                 if (!_gridManager.IsThereLegalMove)
-                    Debug.Log("GAME OVER");
+                    UIManager.Instance.OpenPopup(VictoryPopup.PopupType.DEFEAT, RemainingSquares);
+
             }
         }
 

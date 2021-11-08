@@ -9,12 +9,20 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _nextPiece2;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _remainingMoves;
+    [SerializeField] private VictoryPopup _popup;
 
     private static UIManager _instance;
 
     public static UIManager Instance
     {
         get { return _instance; }
+    }
+
+    public static string TimerToTime(float timer)
+    {
+        int minutes = Mathf.FloorToInt(timer / 60f);
+        int seconds = Mathf.FloorToInt(timer - minutes * 60);
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     private void Awake()
@@ -28,6 +36,11 @@ public class UIManager : MonoBehaviour
         _instance = this;
     }
 
+    public void OpenPopup(VictoryPopup.PopupType popupType, float value)
+    {
+        _popup.SetOverlay(true, popupType, value);
+    }
+
     public void SetNextPieces(Sprite sp1, Sprite sp2)
     {
         _nextPiece1.sprite = sp1;
@@ -36,14 +49,13 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTimer(float timer)
     {
-        int minutes = Mathf.FloorToInt(timer / 60f);
-        int seconds = Mathf.FloorToInt(timer - minutes * 60);
-        string niceTime = string.Format("{0:00}:{1:00}", minutes, seconds);
-        _timerText.text = niceTime;
+        _timerText.text = TimerToTime(timer);
     }
+
+ 
 
     public void UpdateRemainingSquares(int number)
     {
-        _remainingMoves.text = "Remaining squares: " + number.ToString();
+        _remainingMoves.text = number.ToString();
     }
 }

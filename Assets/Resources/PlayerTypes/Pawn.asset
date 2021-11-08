@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9704cc6ec0f9425499157c86d5214596, type: 3}
   m_Name: Pawn
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 504624703, guid: f0e57cf18ae4cb647a937d80787f0cb6, type: 3}
+  Sprite: {fileID: 1227720170, guid: c9815fb00f9905f409b5e414e5e2a320, type: 3}
   Moves:
   - {x: 0, y: 1}
   - {x: 0, y: -1}

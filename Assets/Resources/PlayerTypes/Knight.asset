@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9704cc6ec0f9425499157c86d5214596, type: 3}
   m_Name: Knight
   m_EditorClassIdentifier: 
-  Sprite: {fileID: 1093122707, guid: f0e57cf18ae4cb647a937d80787f0cb6, type: 3}
+  Sprite: {fileID: 1419537383, guid: c9815fb00f9905f409b5e414e5e2a320, type: 3}
   Moves:
   - {x: 1, y: 2}
   - {x: 2, y: 1}

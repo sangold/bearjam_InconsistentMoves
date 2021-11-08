@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
-    private CustomGrid<Tile> _grid;
     private PlayerType _currentType;
     private Tile _currentTile;
     private SpriteRenderer _spriteRenderer;
@@ -11,10 +10,13 @@ public class Player : MonoBehaviour
     public PlayerType CurrentType { get => _currentType; }
     public Tile CurrentTile { get => _currentTile; }
 
-    private void Start()
+    private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-        _grid = FindObjectOfType<GridManager>().GetGrid();
+    }
+
+    private void Start()
+    {
         MoveTo(0, 0);
     }
 
@@ -27,7 +29,8 @@ public class Player : MonoBehaviour
 
     public bool MoveTo(int x, int y)
     {
-        Tile target = _grid.GetGridObject(x, y);
+        
+        Tile target = GridManager.Instance.GetGrid().GetGridObject(x, y);
         
         if (target == null) return false;
         
@@ -35,7 +38,7 @@ public class Player : MonoBehaviour
         if (target.IsWalkable && _currentTile != target)
         {
             _currentTile = target;
-            Vector3 pos = _grid.GetWorldPosition(x, y);
+            Vector3 pos = GridManager.Instance.GetGrid().GetWorldPosition(x, y);
             pos.z = -5f;
             transform.position = pos;
             return true;
@@ -46,11 +49,11 @@ public class Player : MonoBehaviour
 
     public void TeleportTo(int x, int y)
     {
-        Tile target = _grid.GetGridObject(x, y);
+        Tile target = GridManager.Instance.GetGrid().GetGridObject(x, y);
         if (target == null) return;
 
         _currentTile = target;
-        Vector3 pos = _grid.GetWorldPosition(x, y);
+        Vector3 pos = GridManager.Instance.GetGrid().GetWorldPosition(x, y);
         pos.z = -5f;
         transform.position = pos;
     }

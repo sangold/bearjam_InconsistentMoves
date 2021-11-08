@@ -78,7 +78,7 @@ public class VisualTile : MonoBehaviour
     public void SetWalkable(bool isWalkable)
     {
         if (isWalkable)
-            _mr.materials[0].SetColor("_Color", new Color(.26f, .347f, .7f));
+            _mr.materials[0].SetColor("_Color", new Color(r: 0.525f, g: 0.908f, b: 0.564f));
         else
             _mr.materials[0].SetColor("_Color", _color);
     }
