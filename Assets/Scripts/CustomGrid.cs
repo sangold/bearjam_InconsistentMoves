@@ -1,4 +1,4 @@
-﻿using IC.Utils;
+﻿using Chesslitaire.Utils;
 using System;
 using UnityEngine;
 

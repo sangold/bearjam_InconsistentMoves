@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -9,7 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Image _nextPiece2;
     [SerializeField] private TextMeshProUGUI _timerText;
     [SerializeField] private TextMeshProUGUI _remainingMoves;
-    [SerializeField] private VictoryPopup _popup;
+    [SerializeField] private UIPopup _popup;
 
     private static UIManager _instance;
 
@@ -36,7 +35,7 @@ public class UIManager : MonoBehaviour
         _instance = this;
     }
 
-    public void OpenPopup(VictoryPopup.PopupType popupType, float value)
+    public void OpenPopup(UIPopup.PopupType popupType, float value)
     {
         _popup.SetOverlay(true, popupType, value);
     }

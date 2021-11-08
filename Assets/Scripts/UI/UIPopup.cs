@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class VictoryPopup : MonoBehaviour
+public class UIPopup : MonoBehaviour
 {
     public enum PopupType
     {

@@ -1,4 +1,4 @@
-using IC.Utils;
+using Chesslitaire.Utils;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -98,10 +98,10 @@ public class GameManager : MonoBehaviour
                 hoveredTile.VisitTile();
                 SetRandomPlayerType(true);
                 if (RemainingSquares == 0)
-                    UIManager.Instance.OpenPopup(VictoryPopup.PopupType.VICTORY, _elapsedTime);
+                    UIManager.Instance.OpenPopup(UIPopup.PopupType.VICTORY, _elapsedTime);
                 _gridManager.CalculateNewMoves();
                 if (!_gridManager.IsThereLegalMove)
-                    UIManager.Instance.OpenPopup(VictoryPopup.PopupType.DEFEAT, RemainingSquares);
+                    UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
 
             }
         }

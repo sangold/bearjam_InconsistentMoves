@@ -1,5 +1,3 @@
-using IC.Utils;
-using System;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour

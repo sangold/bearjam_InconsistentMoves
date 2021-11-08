@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class Tile
 {
     private CustomGrid<Tile> _grid;

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace IC.Utils
+namespace Chesslitaire.Utils
 {
     public static class Utils
     {
