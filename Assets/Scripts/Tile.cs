@@ -38,7 +38,6 @@ public class Tile
     {
         _hasBeenVisited = false;
         IsWalkable = false;
-        _grid.TriggerGridChanges(_x, _y);
     }
 
     public override string ToString()

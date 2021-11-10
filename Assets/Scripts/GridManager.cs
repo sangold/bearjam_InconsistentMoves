@@ -115,6 +115,7 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < _grid.GetHeight(); y++)
             {
+                _visualGrid[x, y].Reset();
                 _grid.GetGridObject(x, y).Restart();
             }
         }

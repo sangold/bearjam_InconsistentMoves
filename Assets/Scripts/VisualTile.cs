@@ -9,8 +9,10 @@ public class VisualTile : MonoBehaviour
     private Color _color;
     private bool _isMoving = false;
     private bool _isVisited;
+    private bool _isFlipped;
+    private Quaternion unflippedRot = Quaternion.identity * Quaternion.Euler(180, 0, 0);
+    private Quaternion flippedRot = Quaternion.identity * Quaternion.Euler(0, 0, 0);
     [SerializeField] private float _rotationSpeed = 6f;
-    [SerializeField] private float _animDuration = .25f;
 
     public void Init(int x, int y, Transform parent)
     {
@@ -31,21 +33,48 @@ public class VisualTile : MonoBehaviour
     public void SetBgColor(bool isVisited)
     {
         if (isVisited == _isVisited) return;
-
-        if (isVisited && !_isMoving) 
+        if (isVisited)
         {
-            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 0.36f, 0.36f, .21f);
-            StartCoroutine(Rotation(180));
+            if(!_isFlipped)
+            {
+                if (_isMoving)
+                {
+                    StopAllCoroutines();
+                    _mr.transform.rotation = unflippedRot;
+                }
+                StartCoroutine(Rotation(180));
+                _isFlipped = true;
+            }
         }
         else
         {
-            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
             _mr.materials[0].SetColor("_Color", _color);
-            if(!_isMoving)
+            if(_isFlipped)
+            {
+                if (_isMoving)
+                {
+                    StopAllCoroutines();
+                    _mr.transform.rotation = flippedRot;
+                }
+
                 StartCoroutine(Rotation(-180));
+                _isFlipped = false;
+            }
         }
 
         _isVisited = isVisited;
+    }
+
+    public void Reset()
+    {
+        StopAllCoroutines();
+        _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
+        _mr.materials[0].SetColor("_Color", _color);
+        _mr.transform.rotation = Quaternion.identity * Quaternion.Euler(180, 0, 0);
+        _isMoving = false;
+        _isFlipped = false;
+        _isVisited = false;
+        SetHighlight(false);
     }
 
     IEnumerator Rotation(float angle)
@@ -54,7 +83,7 @@ public class VisualTile : MonoBehaviour
 
         for(int i = 0; i < Mathf.Abs(angle / _rotationSpeed); i++)
         {
-            _mr.transform.Rotate(new Vector3(1, 0, 0), _rotationSpeed);
+            _mr.transform.Rotate(new Vector3(1, 0, 0) * angle/Mathf.Abs(angle), _rotationSpeed);
             yield return new WaitForSeconds(.01f);
         }
 
@@ -80,8 +109,14 @@ public class VisualTile : MonoBehaviour
     public void SetWalkable(bool isWalkable)
     {
         if (isWalkable)
+        {
+            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
             _mr.materials[0].SetColor("_Color", new Color(r: 0.525f, g: 0.908f, b: 0.564f));
+        }
         else
+        {
             _mr.materials[0].SetColor("_Color", _color);
+            _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 0.36f, 0.36f, .21f);
+        }
     }
 }
