@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 public class Player : MonoBehaviour
 {
@@ -30,10 +32,18 @@ public class Player : MonoBehaviour
 
         if (target.IsWalkable && _currentTile != target)
         {
-            _currentTile = target;
+            GameManager.Instance.SetState(GameManager.State.MOVING);
             Vector3 pos = GridManager.Instance.GetGrid().GetWorldPosition(x, y);
+            pos.x += .5f;
+            pos.y += .5f;
             pos.z = -5f;
-            transform.position = pos;
+            float duration = .2f + .03f * (transform.position - pos).magnitude;
+            Sequence moveSequence = DOTween.Sequence();
+            moveSequence
+                .Append(transform.DOMove(pos, duration).SetEase(Ease.OutQuad))
+                .Append(transform.DOPunchScale(new Vector3(-.1f, -.1f, -.1f), .35f, 2, 0f).SetEase(Ease.OutCubic))
+                .OnComplete(() => GameManager.Instance.SetState(GameManager.State.WAITING));
+            _currentTile = target;
             return true;
         }
 
@@ -47,6 +57,8 @@ public class Player : MonoBehaviour
 
         _currentTile = target;
         Vector3 pos = GridManager.Instance.GetGrid().GetWorldPosition(x, y);
+        pos.x += .5f;
+        pos.y += .5f;
         pos.z = -5f;
         transform.position = pos;
     }
