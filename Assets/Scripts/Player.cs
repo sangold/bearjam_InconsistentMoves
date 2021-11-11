@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 public class Player : MonoBehaviour
@@ -6,6 +7,8 @@ public class Player : MonoBehaviour
     private PlayerType _currentType;
     private Tile _currentTile;
     private SpriteRenderer _spriteRenderer;
+
+    public EventHandler OnReadyToChange;
 
     public PlayerType CurrentType { get => _currentType; }
     public Tile CurrentTile { get => _currentTile; }
@@ -41,7 +44,9 @@ public class Player : MonoBehaviour
             Sequence moveSequence = DOTween.Sequence();
             moveSequence
                 .Append(transform.DOMove(pos, duration).SetEase(Ease.OutQuad))
-                .Append(transform.DOPunchScale(new Vector3(-.1f, -.1f, -.1f), .35f, 2, 0f).SetEase(Ease.OutCubic))
+                .Append(transform.DOScale(new Vector3(0, 0, 0), .15f).OnComplete(() => OnReadyToChange?.Invoke(this, null)))
+                .Append(transform.DOScale(new Vector3(1, 1, 1), .3f))
+                //.Append(transform.DOPunchScale(new Vector3(-.1f, -.1f, -.1f), .35f, 2, 0f).SetEase(Ease.OutCubic))
                 .OnComplete(() => GameManager.Instance.SetState(GameManager.State.WAITING));
             _currentTile = target;
             return true;

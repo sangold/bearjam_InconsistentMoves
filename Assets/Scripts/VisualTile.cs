@@ -1,8 +1,15 @@
+using DG.Tweening;
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class VisualTile : MonoBehaviour
 {
+    private enum DOAnimation
+    {
+        COMPLETE,
+        WALKABLE
+    }
     private int _x, _y;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private GameObject _highlightGO;
@@ -27,7 +34,6 @@ public class VisualTile : MonoBehaviour
         SetBgColor(false);
         SetHighlight(false);
         transform.SetParent(parent);
-
     }
 
     public void SetBgColor(bool isVisited)
@@ -37,79 +43,82 @@ public class VisualTile : MonoBehaviour
         {
             if(!_isFlipped)
             {
-                if (_isMoving)
-                {
-                    StopAllCoroutines();
-                    _mr.transform.rotation = unflippedRot;
-                }
-                StartCoroutine(Rotation(180));
+                KillRotation();
+                StartRotation(new Vector3(180, 0, 0));
                 _isFlipped = true;
             }
         }
         else
         {
             _mr.materials[0].SetColor("_Color", _color);
-            if(_isFlipped)
+            if (_isFlipped)
             {
-                if (_isMoving)
-                {
-                    StopAllCoroutines();
-                    _mr.transform.rotation = flippedRot;
-                }
-
-                StartCoroutine(Rotation(-180));
+                KillRotation();
+                StartRotation(new Vector3(-180, 0, 0));
                 _isFlipped = false;
             }
+
         }
 
         _isVisited = isVisited;
     }
 
+    private void StartRotation(Vector3 rotationAngle)
+    {
+        Debug.Log(rotationAngle);
+        _mr.transform
+            .DOBlendableLocalRotateBy(rotationAngle, 5f, RotateMode.LocalAxisAdd)
+            .SetId(DOAnimation.COMPLETE + _x * 10 + _y *100)
+            .OnComplete(()=>Debug.Log("complete"));
+    }
+
+    private void KillRotation()
+    {
+        DOTween.Kill(DOAnimation.COMPLETE + _x * 10 + _y * 100);
+        DOTween.Kill(DOAnimation.WALKABLE + _x * 10 + _y * 100);
+        _mr.transform.rotation = _isFlipped ? flippedRot : unflippedRot;
+    }
+
     public void Reset()
     {
-        StopAllCoroutines();
         _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
         _mr.materials[0].SetColor("_Color", _color);
-        _mr.transform.rotation = Quaternion.identity * Quaternion.Euler(180, 0, 0);
         _isMoving = false;
         _isFlipped = false;
         _isVisited = false;
+        KillRotation();
         SetHighlight(false);
-    }
-
-    IEnumerator Rotation(float angle)
-    {
-        _isMoving = true;
-
-        for(int i = 0; i < Mathf.Abs(angle / _rotationSpeed); i++)
-        {
-            _mr.transform.Rotate(new Vector3(1, 0, 0) * angle/Mathf.Abs(angle), _rotationSpeed);
-            yield return new WaitForSeconds(.01f);
-        }
-
-        _isMoving = false;
     }
 
     public void SetHighlight(bool isActive)
     {
         _highlightGO.SetActive(isActive);
-        //if(!_isMoving)
-        //{
-        //    if(isActive)
-        //    {
-        //        StartCoroutine(Push(new Vector3(0.5f, 0.5f, .5f)));
-        //    } 
-        //    else
-        //    {
-        //        StartCoroutine(Push(new Vector3(0.5f, 0.5f, 0f)));
-        //    }
-        //}
     }
 
-    public void SetWalkable(bool isWalkable)
+    public void SetWalkable(bool isWalkable, Tile currentTile)
     {
+        float distX = currentTile.X - _x;
+        float distY = currentTile.Y - _y;
+
+        float dist = Mathf.Max(Mathf.Abs(distX), Mathf.Abs(distY));
+
+        Vector3 dir;
+        if (Mathf.Abs(distX) > Mathf.Abs(distY))
+            dir = new Vector3(0, 1,0) * Mathf.Sign(distX);
+        else
+            dir = new Vector3(1, 0, 0) * Mathf.Sign(distY);
+
+
+        KillRotation();
+
         if (isWalkable)
         {
+
+            _mr.transform
+                .DOBlendableLocalRotateBy(360f * dir, .5f, RotateMode.LocalAxisAdd)
+                .SetDelay(.02f * dist)
+                .SetId(DOAnimation.WALKABLE + _x * 10 + _y * 100);
+
             _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
             _mr.materials[0].SetColor("_Color", new Color(r: 0.525f, g: 0.908f, b: 0.564f));
         }

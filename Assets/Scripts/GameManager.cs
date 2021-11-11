@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     }
 
     public Player Player { get => _player; }
+    public Tile CurrentTile { get => Player.CurrentTile; }
 
     public static GameManager Instance
     {
@@ -54,7 +55,16 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Camera.main.transform.position = new Vector3(MAP_WIDTH / 2f, MAP_HEIGHT / 2f + 1f, -10f);
+        _player.OnReadyToChange += ChangePlayerType;
         Init();
+    }
+
+    private void ChangePlayerType(object sender, System.EventArgs e)
+    {
+        SetRandomPlayerType(true);
+        _gridManager.CalculateNewMoves();
+        if (!_gridManager.IsThereLegalMove)
+            UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
     }
 
     private void Init()
@@ -80,8 +90,6 @@ public class GameManager : MonoBehaviour
     {
         if (_currentState != state)
             _currentState = state;
-
-        Debug.Log(_currentState);
     }
 
     private void SetRandomPlayerType(bool fromNext)
@@ -118,13 +126,8 @@ public class GameManager : MonoBehaviour
             if (_player.MoveTo(hoveredTile.X, hoveredTile.Y))
             {
                 hoveredTile.VisitTile();
-                SetRandomPlayerType(true);
                 if (RemainingSquares == 0)
                     UIManager.Instance.OpenPopup(UIPopup.PopupType.VICTORY, _elapsedTime);
-                _gridManager.CalculateNewMoves();
-                if (!_gridManager.IsThereLegalMove)
-                    UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
-
             }
         }
 

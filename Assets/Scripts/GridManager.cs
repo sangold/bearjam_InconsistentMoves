@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -134,6 +135,6 @@ public class GridManager : MonoBehaviour
 
         VisualTile visualTile = _visualGrid[e.x, e.y];
         visualTile.SetBgColor(e.Tile.IsVisited);
-        visualTile.SetWalkable(e.Tile.IsWalkable);
+        visualTile.SetWalkable(e.Tile.IsWalkable, GameManager.Instance.CurrentTile);
     }
 }
