@@ -103,7 +103,8 @@ public class GridManager : MonoBehaviour
         {
             for (int y = 0; y < _grid.GetHeight(); y++)
             {
-                _grid.GetGridObject(x, y).SetWalkable(false);
+                Tile tile = _grid.GetGridObject(x, y);
+                tile.SetWalkable(false);
             }
         }
 
@@ -134,7 +135,7 @@ public class GridManager : MonoBehaviour
         if (e.Tile == null) return;
 
         VisualTile visualTile = _visualGrid[e.x, e.y];
-        visualTile.SetBgColor(e.Tile.IsVisited);
         visualTile.SetWalkable(e.Tile.IsWalkable, GameManager.Instance.CurrentTile);
+        visualTile.SetBgColor(e.Tile.IsVisited);
     }
 }

@@ -1,35 +1,28 @@
 using DG.Tweening;
-using System;
-using System.Collections;
 using UnityEngine;
 
 public class VisualTile : MonoBehaviour
 {
-    private enum DOAnimation
-    {
-        COMPLETE,
-        WALKABLE
-    }
-    private int _x, _y;
+    private int _x, _y, _animationID;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private GameObject _highlightGO;
-    private Color _color;
-    private bool _isMoving = false;
+    private Color _walkableColor = new Color(r: 0.525f, g: 0.908f, b: 0.564f);
+    private Color _visitedColor = new Color(r: 1f, g: 0.8128f, b: 0.243f);
     private bool _isVisited;
     private bool _isFlipped;
     private Quaternion unflippedRot = Quaternion.identity * Quaternion.Euler(180, 0, 0);
     private Quaternion flippedRot = Quaternion.identity * Quaternion.Euler(0, 0, 0);
-    [SerializeField] private float _rotationSpeed = 6f;
 
     public void Init(int x, int y, Transform parent)
     {
         _x = x;
         _y = y;
+        _animationID = x + 10 * y;
 
         if (_x % 2 == 0 && _y % 2 == 0 || _x % 2 != 0 && _y % 2 != 0)
-            _color = new Color(.153f, .204f, .412f);
+            _mr.materials[0].SetColor("_Color", new Color(.153f, .204f, .412f));
         else
-            _color = new Color(.118f, .153f, .286f);
+            _mr.materials[0].SetColor("_Color", new Color(.118f, .153f, .286f));
 
         SetBgColor(false);
         SetHighlight(false);
@@ -39,8 +32,10 @@ public class VisualTile : MonoBehaviour
     public void SetBgColor(bool isVisited)
     {
         if (isVisited == _isVisited) return;
+        Debug.Log(_isVisited + " " + _isFlipped);
         if (isVisited)
         {
+            _mr.materials[2].SetColor("_Color", _visitedColor);
             if(!_isFlipped)
             {
                 KillRotation();
@@ -50,7 +45,6 @@ public class VisualTile : MonoBehaviour
         }
         else
         {
-            _mr.materials[0].SetColor("_Color", _color);
             if (_isFlipped)
             {
                 KillRotation();
@@ -63,31 +57,27 @@ public class VisualTile : MonoBehaviour
         _isVisited = isVisited;
     }
 
-    private void StartRotation(Vector3 rotationAngle)
+    private void StartRotation(Vector3 rotationAngle, float delay = 0f)
     {
-        Debug.Log(rotationAngle);
         _mr.transform
-            .DOBlendableLocalRotateBy(rotationAngle, 5f, RotateMode.LocalAxisAdd)
-            .SetId(DOAnimation.COMPLETE + _x * 10 + _y *100)
-            .OnComplete(()=>Debug.Log("complete"));
+            .DOBlendableLocalRotateBy(rotationAngle, .5f, RotateMode.LocalAxisAdd)
+            .SetDelay(delay)
+            .SetId(_animationID);
     }
 
     private void KillRotation()
     {
-        DOTween.Kill(DOAnimation.COMPLETE + _x * 10 + _y * 100);
-        DOTween.Kill(DOAnimation.WALKABLE + _x * 10 + _y * 100);
+        DOTween.Kill(_animationID);
         _mr.transform.rotation = _isFlipped ? flippedRot : unflippedRot;
     }
 
     public void Reset()
     {
         _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-        _mr.materials[0].SetColor("_Color", _color);
-        _isMoving = false;
         _isFlipped = false;
         _isVisited = false;
-        KillRotation();
         SetHighlight(false);
+        KillRotation();
     }
 
     public void SetHighlight(bool isActive)
@@ -113,18 +103,21 @@ public class VisualTile : MonoBehaviour
 
         if (isWalkable)
         {
-
-            _mr.transform
-                .DOBlendableLocalRotateBy(360f * dir, .5f, RotateMode.LocalAxisAdd)
-                .SetDelay(.02f * dist)
-                .SetId(DOAnimation.WALKABLE + _x * 10 + _y * 100);
-
+            _mr.materials[2].SetColor("_Color", _walkableColor);
+            if(!_isFlipped)
+            {
+                StartRotation(180f * dir, .05f * dist);
+                _isFlipped = true;
+            }
             _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 1f);
-            _mr.materials[0].SetColor("_Color", new Color(r: 0.525f, g: 0.908f, b: 0.564f));
         }
         else
         {
-            _mr.materials[0].SetColor("_Color", _color);
+            if(_isFlipped && !_isVisited)
+            {
+                StartRotation(new Vector3(-180, 0, 0));
+                _isFlipped = false;
+            }
             _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 0.36f, 0.36f, .21f);
         }
     }
