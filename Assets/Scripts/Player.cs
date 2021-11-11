@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public PlayerType CurrentType { get => _currentType; }
     public Tile CurrentTile { get => _currentTile; }
 
+    public float MoveDuration { get; private set; }
+
     private void Awake()
     {
         _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -40,10 +42,10 @@ public class Player : MonoBehaviour
             pos.x += .5f;
             pos.y += .5f;
             pos.z = -5f;
-            float duration = .2f + .03f * (transform.position - pos).magnitude;
+            MoveDuration = .2f + .03f * (transform.position - pos).magnitude;
             Sequence moveSequence = DOTween.Sequence();
             moveSequence
-                .Append(transform.DOMove(pos, duration).SetEase(Ease.OutQuad))
+                .Append(transform.DOMove(pos, MoveDuration).SetEase(Ease.OutQuad))
                 .Append(transform.DOScale(new Vector3(0, 0, 0), .15f).OnComplete(() => OnReadyToChange?.Invoke(this, null)))
                 .Append(transform.DOScale(new Vector3(1, 1, 1), .3f))
                 //.Append(transform.DOPunchScale(new Vector3(-.1f, -.1f, -.1f), .35f, 2, 0f).SetEase(Ease.OutCubic))
