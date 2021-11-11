@@ -1,8 +1,15 @@
 using Chesslitaire.Utils;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public enum State
+    {
+        WAITING,
+        MOVING,
+        CALCULATING
+    }
     private static GameManager _instance;
     public const int MAP_WIDTH = 8, MAP_HEIGHT = 8;
     [SerializeField] private GridManager _gridManager;
@@ -11,6 +18,7 @@ public class GameManager : MonoBehaviour
     private PlayerType[] _nextTypes;
     private float _elapsedTime;
     private int _remainingSquares;
+    private State _currentState;
 
     public int RemainingSquares { 
         get => _remainingSquares; 
@@ -21,6 +29,7 @@ public class GameManager : MonoBehaviour
     }
 
     public Player Player { get => _player; }
+    public Tile CurrentTile { get => Player.CurrentTile; }
 
     public static GameManager Instance
     {
@@ -29,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        DOTween.Init();
         if (_instance != null && _instance != this)
         {
             Destroy(this.gameObject);
@@ -45,23 +55,41 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         Camera.main.transform.position = new Vector3(MAP_WIDTH / 2f, MAP_HEIGHT / 2f + 1f, -10f);
+        _player.OnReadyToChange += ChangePlayerType;
         Init();
+    }
+
+    private void ChangePlayerType(object sender, System.EventArgs e)
+    {
+        SetRandomPlayerType(true);
+        _gridManager.CalculateNewMoves();
+        if (!_gridManager.IsThereLegalMove)
+            UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
     }
 
     private void Init()
     {
+        _currentState = State.MOVING;
         _elapsedTime = 0;
         RemainingSquares = MAP_HEIGHT * MAP_WIDTH;
         SetRandomPlayerType(false);
         _player.TeleportTo(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2));
         _gridManager.GetGrid().GetGridObject(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2)).VisitTile();
+        _currentState = State.CALCULATING;
         _gridManager.CalculateNewMoves();
+        _currentState = State.WAITING;
     }
 
     public void Restart()
     {
         _gridManager.ResetAll();
         Init();
+    }
+
+    public void SetState(State state)
+    {
+        if (_currentState != state)
+            _currentState = state;
     }
 
     private void SetRandomPlayerType(bool fromNext)
@@ -91,18 +119,15 @@ public class GameManager : MonoBehaviour
 
         if (hoveredTile == null) return;
 
+        if(_currentState != State.WAITING) { return; }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (_player.MoveTo(hoveredTile.X, hoveredTile.Y))
             {
                 hoveredTile.VisitTile();
-                SetRandomPlayerType(true);
                 if (RemainingSquares == 0)
                     UIManager.Instance.OpenPopup(UIPopup.PopupType.VICTORY, _elapsedTime);
-                _gridManager.CalculateNewMoves();
-                if (!_gridManager.IsThereLegalMove)
-                    UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
-
             }
         }
 

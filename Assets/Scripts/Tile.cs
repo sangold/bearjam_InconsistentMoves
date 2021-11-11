@@ -20,17 +20,19 @@ public class Tile
         IsWalkable = walkable;
     }
 
-    public void VisitTile()
+    public void VisitTile(bool triggerChange = true)
     {
         _hasBeenVisited = true;
-        _grid.TriggerGridChanges(_x, _y);
+        if(triggerChange)
+            _grid.TriggerGridChanges(_x, _y);
         GameManager.Instance.RemainingSquares--;
     }
 
-    public bool SetWalkable(bool isWalkable)
+    public bool SetWalkable(bool isWalkable, bool triggerChange = true)
     {
         IsWalkable = isWalkable && !_hasBeenVisited;
-        _grid.TriggerGridChanges(_x, _y);
+        if (triggerChange)
+            _grid.TriggerGridChanges(_x, _y);
         return IsWalkable;
     }
 
