@@ -136,6 +136,6 @@ public class GridManager : MonoBehaviour
 
         VisualTile visualTile = _visualGrid[e.x, e.y];
         visualTile.SetWalkable(e.Tile.IsWalkable, GameManager.Instance.CurrentTile);
-        visualTile.SetBgColor(e.Tile.IsVisited);
+        visualTile.SetBgColor(e.Tile.IsVisited, GameManager.Instance.Player.MoveDuration);
     }
 }

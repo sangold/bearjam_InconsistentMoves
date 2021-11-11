@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class VisualTile : MonoBehaviour
 {
-    private int _x, _y, _animationID;
+    private int _x, _y, _animationID, _textureAnimID;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private GameObject _highlightGO;
+    private Material _backFaceMaterial;
     private Color _walkableColor = new Color(r: 0.525f, g: 0.908f, b: 0.564f);
     private Color _visitedColor = new Color(r: 1f, g: 0.8128f, b: 0.243f);
     private bool _isVisited;
@@ -13,29 +14,36 @@ public class VisualTile : MonoBehaviour
     private Quaternion unflippedRot = Quaternion.identity * Quaternion.Euler(180, 0, 0);
     private Quaternion flippedRot = Quaternion.identity * Quaternion.Euler(0, 0, 0);
 
+    private void Awake()
+    {
+        _backFaceMaterial = _mr.materials[2];
+    }
     public void Init(int x, int y, Transform parent)
     {
         _x = x;
         _y = y;
         _animationID = x + 10 * y;
-
+        _textureAnimID = 1000+ x * 10 + y * 100;
         if (_x % 2 == 0 && _y % 2 == 0 || _x % 2 != 0 && _y % 2 != 0)
             _mr.materials[0].SetColor("_Color", new Color(.153f, .204f, .412f));
         else
             _mr.materials[0].SetColor("_Color", new Color(.118f, .153f, .286f));
 
-        SetBgColor(false);
+        SetBgColor(false, 0);
         SetHighlight(false);
         transform.SetParent(parent);
     }
 
-    public void SetBgColor(bool isVisited)
+    public void SetBgColor(bool isVisited, float moveDuration)
     {
         if (isVisited == _isVisited) return;
-        Debug.Log(_isVisited + " " + _isFlipped);
         if (isVisited)
         {
-            _mr.materials[2].SetColor("_Color", _visitedColor);
+            _backFaceMaterial
+                .DOFloat(.25f, "_TransitionProgression", .4f)
+                .SetDelay(moveDuration + .1f)
+                .SetId(_textureAnimID)
+                .SetEase(Ease.OutExpo);
             if(!_isFlipped)
             {
                 KillRotation();
@@ -78,6 +86,8 @@ public class VisualTile : MonoBehaviour
         _isVisited = false;
         SetHighlight(false);
         KillRotation();
+        DOTween.Kill(_textureAnimID);
+        _backFaceMaterial.SetFloat("_TransitionProgression", 0f);
     }
 
     public void SetHighlight(bool isActive)
@@ -103,8 +113,8 @@ public class VisualTile : MonoBehaviour
 
         if (isWalkable)
         {
-            _mr.materials[2].SetColor("_Color", _walkableColor);
-            if(!_isFlipped)
+            _backFaceMaterial.SetFloat("_TransitionProgression", 0f);
+            if (!_isFlipped)
             {
                 StartRotation(180f * dir, .05f * dist);
                 _isFlipped = true;
