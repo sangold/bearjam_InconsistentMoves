@@ -5,7 +5,8 @@ public class MainMenu : MonoBehaviour
 {
     private void Awake()
     {
-        Screen.SetResolution(432, 768, FullScreenMode.Windowed);
+
+        Screen.SetResolution(Mathf.FloorToInt(Screen.height * (9f / 16f)), Screen.height, FullScreenMode.Windowed);
     }
 
     public void ExitGame()
