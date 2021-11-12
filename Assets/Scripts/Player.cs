@@ -14,6 +14,8 @@ public class Player : MonoBehaviour
     public Tile CurrentTile { get => _currentTile; }
 
     public float MoveDuration { get; private set; }
+    [SerializeField] private AudioClip _wooshSound;
+    [SerializeField] private AudioClip _popSound;
 
     private void Awake()
     {
@@ -33,7 +35,7 @@ public class Player : MonoBehaviour
         Tile target = GridManager.Instance.GetGrid().GetGridObject(x, y);
         
         if (target == null) return false;
-        
+
 
         if (target.IsWalkable && _currentTile != target)
         {
@@ -45,8 +47,11 @@ public class Player : MonoBehaviour
             MoveDuration = .2f + .03f * (transform.position - pos).magnitude;
             Sequence moveSequence = DOTween.Sequence();
             moveSequence
-                .Append(transform.DOMove(pos, MoveDuration).SetEase(Ease.OutQuad))
-                .Append(transform.DOScale(new Vector3(0, 0, 0), .15f).OnComplete(() => OnReadyToChange?.Invoke(this, null)))
+                .Append(transform.DOMove(pos, MoveDuration).SetEase(Ease.OutQuad).OnStart(() => SoundManager.Instance.PlaySound(_wooshSound, 1f, true)))
+                .Append(transform.DOScale(new Vector3(0, 0, 0), .15f).OnComplete(() => {
+                    SoundManager.Instance.PlaySound(_popSound, 1f, true);
+                    OnReadyToChange?.Invoke(this, null);
+                }))
                 .Append(transform.DOScale(new Vector3(1, 1, 1), .3f))
                 //.Append(transform.DOPunchScale(new Vector3(-.1f, -.1f, -.1f), .35f, 2, 0f).SetEase(Ease.OutCubic))
                 .OnComplete(() => GameManager.Instance.SetState(GameManager.State.WAITING));

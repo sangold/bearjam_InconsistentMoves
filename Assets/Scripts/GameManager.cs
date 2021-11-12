@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public const int MAP_WIDTH = 8, MAP_HEIGHT = 8;
     [SerializeField] private GridManager _gridManager;
     [SerializeField] private Player _player;
+    [SerializeField] private AudioClip _startSound;
     private PlayerType[] _types;
     private PlayerType[] _nextTypes;
     private float _elapsedTime;
@@ -78,6 +79,7 @@ public class GameManager : MonoBehaviour
         _currentState = State.CALCULATING;
         _gridManager.CalculateNewMoves();
         _currentState = State.WAITING;
+        SoundManager.Instance.PlaySound(_startSound);
     }
 
     public void Restart()

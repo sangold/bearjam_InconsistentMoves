@@ -45,6 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59819fcd147ef8e4bb75e84eeed7498d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _wooshSound: {fileID: 8300000, guid: 43864fba230883c4fb5e3050074906a8, type: 3}
+  _popSound: {fileID: 8300000, guid: 0a9fbcdf01786ba4bb0aba2d37cbd194, type: 3}
 --- !u!1 &1445658405889321121
 GameObject:
   m_ObjectHideFlags: 0
