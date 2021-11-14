@@ -8,7 +8,9 @@ public class GameManager : MonoBehaviour
     {
         WAITING,
         MOVING,
-        CALCULATING
+        CALCULATING,
+        VICTORY,
+        DEFEAT
     }
     private static GameManager _instance;
     public const int MAP_WIDTH = 8, MAP_HEIGHT = 8;
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour
         SetRandomPlayerType(true);
         _gridManager.CalculateNewMoves();
         if (!_gridManager.IsThereLegalMove)
-            UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
+            Defeat();
     }
 
     private void Init()
@@ -110,8 +112,25 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SetNextPieces(_nextTypes[0].Sprite, _nextTypes[1].Sprite);
     }
 
+    private void Victory()
+    {
+        SetState(State.VICTORY);
+        UIManager.Instance.OpenPopup(UIPopup.PopupType.VICTORY, _elapsedTime);
+    }
+
+    private void Defeat()
+    {
+        SetState(State.DEFEAT);
+        UIManager.Instance.OpenPopup(UIPopup.PopupType.DEFEAT, RemainingSquares);
+    }
+
     private void Update()
     {
+        if (_currentState == State.VICTORY)
+            return;
+        if (_currentState == State.DEFEAT)
+            return;
+
         _elapsedTime += Time.deltaTime;
         UIManager.Instance.UpdateTimer(_elapsedTime);
 
@@ -129,8 +148,23 @@ public class GameManager : MonoBehaviour
             {
                 hoveredTile.VisitTile();
                 if (RemainingSquares == 0)
-                    UIManager.Instance.OpenPopup(UIPopup.PopupType.VICTORY, _elapsedTime);
+                    Victory();
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
+        }
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            Victory();
+        }
+        
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            Defeat();
         }
 
     }

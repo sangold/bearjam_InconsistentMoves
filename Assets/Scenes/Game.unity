@@ -1176,6 +1176,7 @@ MonoBehaviour:
   _timer: {fileID: 1136346213}
   _title: {fileID: 1886226006}
   _flavour: {fileID: 1549578773}
+  _popupTransform: {fileID: 659360602}
 --- !u!1 &1118597957
 GameObject:
   m_ObjectHideFlags: 0
