@@ -1,9 +1,10 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class VisualTile : MonoBehaviour
 {
-    private int _x, _y, _animationID, _textureAnimID;
+    private int _x, _y, _animationID, _textureAnimID, _scaleOutAnimID;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private GameObject _highlightGO;
     private Material _backFaceMaterial;
@@ -24,6 +25,7 @@ public class VisualTile : MonoBehaviour
         _y = y;
         _animationID = x + 10 * y;
         _textureAnimID = 1000+ x * 10 + y * 100;
+        _scaleOutAnimID = 10000 + x * 10 + y * 100;
         if (_x % 2 == 0 && _y % 2 == 0 || _x % 2 != 0 && _y % 2 != 0)
             _mr.materials[0].SetColor("_Color", new Color(.153f, .204f, .412f));
         else
@@ -87,6 +89,8 @@ public class VisualTile : MonoBehaviour
         SetHighlight(false);
         KillRotation();
         DOTween.Kill(_textureAnimID);
+        DOTween.Kill(_scaleOutAnimID);
+        _mr.transform.localScale = new Vector3(.48f, .48f, .48f);
         _backFaceMaterial.SetFloat("_TransitionProgression", 0f);
     }
 
@@ -130,5 +134,10 @@ public class VisualTile : MonoBehaviour
             }
             _highlightGO.GetComponent<SpriteRenderer>().color = new Color(1f, 0.36f, 0.36f, .21f);
         }
+    }
+
+    public void Leave()
+    {
+        _mr.transform.DOScale(0f, .5f).SetId(_scaleOutAnimID);
     }
 }

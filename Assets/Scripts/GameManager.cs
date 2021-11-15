@@ -76,8 +76,10 @@ public class GameManager : MonoBehaviour
         _elapsedTime = 0;
         RemainingSquares = MAP_HEIGHT * MAP_WIDTH;
         SetRandomPlayerType(false);
-        _player.TeleportTo(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2));
-        _gridManager.GetGrid().GetGridObject(Mathf.FloorToInt(MAP_WIDTH / 2), Mathf.FloorToInt(MAP_HEIGHT / 2)).VisitTile();
+        int x = Random.Range(0, MAP_WIDTH);
+        int y = Random.Range(0, MAP_HEIGHT);
+        _player.TeleportTo(x, y);
+        _gridManager.GetGrid().GetGridObject(x,y).VisitTile();
         _currentState = State.CALCULATING;
         _gridManager.CalculateNewMoves();
         _currentState = State.WAITING;

@@ -46,6 +46,7 @@ public class Player : MonoBehaviour
             pos.z = -5f;
             MoveDuration = .2f + .03f * (transform.position - pos).magnitude;
             Sequence moveSequence = DOTween.Sequence();
+            GridManager.Instance.LeaveTile(_currentTile);
             moveSequence
                 .Append(transform.DOMove(pos, MoveDuration).SetEase(Ease.OutQuad).OnStart(() => SoundManager.Instance.PlaySound(_wooshSound, 1f, true)))
                 .Append(transform.DOScale(new Vector3(0, 0, 0), .15f).OnComplete(() => {

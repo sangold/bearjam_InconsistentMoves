@@ -130,6 +130,11 @@ public class GridManager : MonoBehaviour
         return _grid;
     }
 
+    public void LeaveTile(Tile t)
+    {
+        _visualGrid[t.X, t.Y].Leave();
+    }
+
     private void Grid_OnGridValueChanged(object sender, CustomGrid<Tile>.OnGridValueChangedEventArgs e)
     {
         if (e.Tile == null) return;
