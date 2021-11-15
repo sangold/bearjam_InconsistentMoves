@@ -37,7 +37,7 @@ public class UIPopup : MonoBehaviour
             {
                 openSequence
                     .Append(_popupTransform.DOScale(.25f, .55f).SetEase(Ease.OutExpo).From())
-                    .Append(_popupTransform.DOShakePosition(1.5f,));
+                    .Join(_popupTransform.DOShakePosition(1f,new Vector3(50f, 0, 0), vibrato: 15));
                 _title.text = "Defeat";
                 _flavour.text = "You still had to clear ";
                 _timer.text = timer.ToString();
